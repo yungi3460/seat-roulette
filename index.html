@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>우리반 자리 룰렛</title>
+
+<style>
+body{
+font-family: sans-serif;
+text-align: center;
+}
+
+.row{
+display:flex;
+justify-content:center;
+margin:10px;
+}
+
+.seat{
+width:70px;
+height:40px;
+border:2px solid black;
+margin:6px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:14px;
+background:white;
+}
+
+.bottom{
+justify-content:center;
+gap:120px;
+}
+
+button{
+margin:15px;
+padding:10px 25px;
+font-size:16px;
+cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<h2>칠판</h2>
+
+<div id="classroom"></div>
+
+<button onclick="start()">START</button>
+<button onclick="stop()">STOP</button>
+
+<script>
+
+const students=[
+"학생1","학생2","학생3","학생4","학생5","학생6","학생7","학생8","학생9",
+"학생10","학생11","학생12","학생13","학생14","학생15","학생16","학생17",
+"학생18","학생19","학생20","학생21","학생22","학생23","학생24","학생25",
+"학생26","학생27"
+];
+
+const classroom=document.getElementById("classroom");
+
+const layout=[5,6,5,6,5];
+
+let seats=[];
+let interval;
+
+// 위 5줄 생성
+
+layout.forEach(n=>{
+
+const row=document.createElement("div");
+row.className="row";
+
+for(let i=0;i<n;i++){
+
+const seat=document.createElement("div");
+seat.className="seat";
+seat.innerText="?";
+
+row.appendChild(seat);
+seats.push(seat);
+
+}
+
+classroom.appendChild(row);
+
+});
+
+// 마지막 줄 (2자리)
+
+const last=document.createElement("div");
+last.className="row bottom";
+
+for(let i=0;i<2;i++){
+
+const seat=document.createElement("div");
+seat.className="seat";
+seat.innerText="?";
+
+last.appendChild(seat);
+seats.push(seat);
+
+}
+
+classroom.appendChild(last);
+
+
+// START
+
+function start(){
+
+interval=setInterval(()=>{
+
+seats.forEach(seat=>{
+seat.innerText=Math.floor(Math.random()*100);
+});
+
+},70);
+
+}
+
+
+// STOP
+
+function stop(){
+
+clearInterval(interval);
+
+let shuffled=[...students];
+
+for(let i=shuffled.length-1;i>0;i--){
+
+const j=Math.floor(Math.random()*(i+1));
+[shuffled[i],shuffled[j]]=[shuffled[j],shuffled[i]];
+
+}
+
+seats.forEach((seat,i)=>{
+seat.innerText=shuffled[i];
+});
+
+}
+
+</script>
+
+</body>
+</html>
